@@ -8,8 +8,7 @@ only supports exactly the features I want and operating systems I run
 
 ## installation
 ```sh
-git clone https://github.com/skovati/fetch
-cargo install --path fetch
+cargo install --git https://github.com/skovati/fetch
 ```
 
 ## usage

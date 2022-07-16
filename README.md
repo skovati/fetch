@@ -2,7 +2,7 @@
 
 _extremely_ simple fetch utility
 
-![](https://user-images.githubusercontent.com/49844593/179374779-4cc5098d-5e7c-4019-a63c-bb9e0c379569.png)
+![](https://user-images.githubusercontent.com/49844593/179374809-0bb84b9c-64e3-4f3e-bc02-09965b3d6633.png)
 
 only supports exactly the features I want and operating systems I run
 

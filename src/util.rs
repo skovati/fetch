@@ -97,7 +97,7 @@ pub fn mem() -> String {
             let used = total_used - buffed - total_cached;
             let used_mb = used / 1024;
             let percent_used = 100.0 * (used as f32 / total as f32);
-            format!("{}mb ({:.0}%)", used_mb, percent_used)
+            format!("{}mb {:.0}%", used_mb, percent_used)
         },
         Err(_) => N_A.to_string()
     }

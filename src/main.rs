@@ -1,5 +1,6 @@
 use comfy_table::{Table, CellAlignment, Cell, Attribute, Color};
 use comfy_table::presets::UTF8_FULL;
+use comfy_table::modifiers::UTF8_SOLID_INNER_BORDERS;
 
 mod util;
 
@@ -9,6 +10,7 @@ fn main() {
         .load_preset(UTF8_FULL)
         .set_width(40)
         .set_content_arrangement(comfy_table::ContentArrangement::Dynamic)
+        .apply_modifier(UTF8_SOLID_INNER_BORDERS)
         .set_header(vec![
                 Cell::new(format!("{}@", util::user()))
                     .add_attribute(Attribute::Bold),

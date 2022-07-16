@@ -3,6 +3,8 @@ use std::fs;
 use std::env;
 use std::process;
 
+const N_A: &str = "n/a";
+
 pub fn user() -> String {
     env::var("USER")
         .unwrap_or("n/a".to_string())
@@ -13,7 +15,7 @@ pub fn user() -> String {
 pub fn host() -> String {
     match fs::read_to_string("/etc/hostname") {
         Ok(s) => s.trim().to_string(),
-        Err(_) => String::from("n/a")
+        Err(_) => N_A.to_string()
     }
 }
 
@@ -25,7 +27,7 @@ pub fn os() -> String {
             .unwrap_or("n/a".to_string())
             .trim()
             .to_string(),
-        Err(_) => String::from("n/a")
+        Err(_) => N_A.to_string()
     }
 }
 
@@ -37,10 +39,10 @@ pub fn distro() -> String {
         .map(|s| s.split_at(s.find("=").unwrap()))
         .map(|(k, v)| (k.to_string(), v[1..].to_string()))
         .collect::<HashMap<String, String>>()
-        .get("ID").unwrap_or(&String::from("n/a"))
+        .get("ID").unwrap_or(&N_A.to_string())
         .trim_matches('"')
         .to_string(),
-        Err(_) => String::from("n/a")
+        Err(_) => N_A.to_string()
     }
 }
 
@@ -52,7 +54,7 @@ pub fn kernel() -> String {
             .unwrap_or("n/a".to_string())
             .trim()
             .to_string(),
-        Err(_) => String::from("n/a")
+        Err(_) => N_A.to_string()
     }
 }
 
@@ -66,24 +68,23 @@ pub fn pkgs() -> String {
             .lines()
             .count()
             .to_string(),
-        Err(_) => String::from("n/a")
+        Err(_) => N_A.to_string()
     }
 }
 
 pub fn mem() -> String {
-    match fs::read_to_string("/proc/meminfo") {
-        Ok(s) => {
-            format!("{}mb", s
-                .trim()
-                .split("\n")
-                .map(|s| s.split_at(s.find(":").unwrap()))
-                .map(|(k, v)| (k.trim().to_string(), v[1..].trim().to_string()))
-                .collect::<HashMap<String, String>>()
-                .get("Active").unwrap_or(&String::from("n/a"))
-                .split(' ')
-                .next().unwrap().parse::<i32>().unwrap() / 1000)
-        },
-        Err(_) => String::from("n/a")
+    match process::Command::new("free")
+        .arg("-m")
+        .output() {
+        Ok(s) => format!("{}mb", String::from_utf8(s.stdout)
+            .unwrap_or("".to_string())
+            .lines()
+            .nth(1).unwrap_or(&String::new())
+            .to_string()
+            .split_whitespace()
+            .nth(2).unwrap_or(&N_A.to_string())
+            .to_string()),
+        Err(_) => N_A.to_string()
     }
 }
 
@@ -97,6 +98,6 @@ pub fn uptime() -> String {
             .split(',')
             .next().unwrap_or("n/a")
             .to_string(),
-        Err(_) => String::from("n/a")
+        Err(_) => N_A.to_string()
     }
 }
